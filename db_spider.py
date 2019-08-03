@@ -78,3 +78,24 @@ print(datalst1[:2])
 
 df=pd.DataFrame(datalst1)
 print(df.iloc[:10])
+
+
+#连接mysql
+db=pymysql.connect("localhost", "root", "root123", "movie")
+cursor = db.cursor()
+cursor.execute("SELECT VERSION()")
+data = cursor.fetchone()
+print("Database version:%s" %data)#测试mysql是否连接成功
+
+
+#将数据录入mysql
+engine=create_engine('mysql+pymysql://root:root123@localhost/movie')
+df.to_sql('imdb',con=engine,if_exists='replace')
+
+
+#从数据库中获取数据
+db=pymysql.connect("localhost", "root", "root123", "movie")
+cursor = db.cursor()#获得操作游标
+cursor.execute("SELECT link FROM imdb")
+result = cursor.fetchall()
+#print(result)

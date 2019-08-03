@@ -8,9 +8,8 @@ warnings.filterwarnings('ignore')
 # 不发出警告
 
 
-
 #数据的采集
-'''
+
 u="https://movie.douban.com/subject/26100958/comments?start=0&limit=20&sort=new_score&status=P"
 r=requests.get(url=u)
 r.encoding='utf-8'
@@ -33,7 +32,7 @@ for infor in infor_lst[:1]:
 #print(dic)
 
 #以上为整个数据采集测试部分
-'''
+
 #以下为网页数据获取函数
 def get_data(url):
     try:

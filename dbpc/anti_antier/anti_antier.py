@@ -1,3 +1,8 @@
+import requests
+import random
+import urllib.request
+from bs4 import BeautifulSoup
+
 #获取IP代理
 
 def get_ip_list(url, headers):

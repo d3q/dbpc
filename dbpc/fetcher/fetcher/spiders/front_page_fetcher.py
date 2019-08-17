@@ -17,10 +17,11 @@ class FrontPageFetcher(scrapy.Spider):
 
         #sys.exit(0)
         
-        
-        urls = ["https://movie.douban.com/"]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+        #urls = ["https://movie.douban.com/"]
+
+        for i in range(0,5):
+        # for url in urls:
+             yield scrapy.Request(url='https://movie.douban.com/', callback=self.parse,dont_filter=True)
 
     def parse(self, response):
         page = response.url.split("/")[-2]
@@ -30,9 +31,10 @@ class FrontPageFetcher(scrapy.Spider):
         self.log('Saved file %s' % filename)
         self.log('Start parsing %s' % filename)
         
-        with open(filename, 'rt') as f:
+        # with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf8') as f:
             soup = BeautifulSoup(f, "html.parser")
-            
+
         self.log(soup.title)
         urls = {}
 

@@ -4,8 +4,14 @@
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-
+import sys
+import time
+import hashlib
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+from faker import Faker
 from scrapy import signals
+from  scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
 
 
 class FetcherSpiderMiddleware(object):
@@ -101,3 +107,36 @@ class FetcherDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+
+class FetcherDownloaderMiddlewareProxyIP(object):
+
+    def __init__(self):
+        orderno = "ZF20198147432HvMNOZ"
+        secret = "581f8b0d7868491ca98ee6ac53fd72fd"
+        ip_port = "forward.xdaili.cn:80"
+        timestamp = str(int(time.time()))
+        string = "orderno=" + orderno + "," + "secret=" + secret + "," + "timestamp=" + timestamp
+        string = string.encode()
+        md5_string = hashlib.md5(string).hexdigest()
+        sign = md5_string.upper()
+        self.auth = "sign=" + sign + "&" + "orderno=" + orderno + "&" + "timestamp=" + timestamp
+        self.proxy = 'http://' + ip_port
+
+
+    def process_request(self, request, spider):
+        request.meta['proxy'] = self.proxy
+        print(self.proxy)
+        request.headers.setdefault('Proxy-Authorization',self.auth)
+
+class FetcherDownloaderMiddlewareUserAgent(object):
+    def __init__(self):
+       self.fake = Faker()
+
+
+    def process_request(self,request,spider):
+        print(self.fake.user_agent())
+        request.headers.setdefault('User-Agent',self.fake.user_agent())
+
+

@@ -54,9 +54,13 @@ CONCURRENT_REQUESTS_PER_IP = 3
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+DOWNLOADER_MIDDLEWARES = {
 #    'fetcher.middlewares.FetcherDownloaderMiddleware': 543,
-#}
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware':None,
+    'fetcher.middlewares.FetcherDownloaderMiddlewareUserAgent':100,
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':None,
+    'fetcher.middlewares.FetcherDownloaderMiddlewareProxyIP':543,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html

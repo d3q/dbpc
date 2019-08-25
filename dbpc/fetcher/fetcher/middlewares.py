@@ -11,7 +11,11 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from faker import Faker
 from scrapy import signals
-from  scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
+from scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
+from scrapy.downloadermiddlewares.httpcache import HttpCacheMiddleware
+from .script.scripts_request_with_xdaili import scripts_request_with_xdaili
+from scrapy.http import Response,HtmlResponse,TextResponse
+import faker
 
 
 class FetcherSpiderMiddleware(object):
@@ -113,22 +117,25 @@ class FetcherDownloaderMiddleware(object):
 class FetcherDownloaderMiddlewareProxyIP(object):
 
     def __init__(self):
-        orderno = "ZF20198147432HvMNOZ"
-        secret = "581f8b0d7868491ca98ee6ac53fd72fd"
-        ip_port = "forward.xdaili.cn:80"
-        timestamp = str(int(time.time()))
-        string = "orderno=" + orderno + "," + "secret=" + secret + "," + "timestamp=" + timestamp
-        string = string.encode()
-        md5_string = hashlib.md5(string).hexdigest()
-        sign = md5_string.upper()
-        self.auth = "sign=" + sign + "&" + "orderno=" + orderno + "&" + "timestamp=" + timestamp
-        self.proxy = 'http://' + ip_port
+        self.fake = faker.Faker()
+        # orderno = "ZF20198180632BK2FZP"
+        # secret = "e6d04e020e714f97a441afcbda48a2b5"
+        # ip_port = "forward.xdaili.cn:80"
+        # timestamp = str(int(time.time()))
+        # string = "orderno=" + orderno + "," + "secret=" + secret + "," + "timestamp=" + timestamp
+        # string = string.encode()
+        # md5_string = hashlib.md5(string).hexdigest()
+        # sign = md5_string.upper()
+        # self.auth = "sign=" + sign + "&" + "orderno=" + orderno + "&" + "timestamp=" + timestamp
+        # self.proxy = ip_port
 
 
     def process_request(self, request, spider):
-        request.meta['proxy'] = self.proxy
-        print(self.proxy)
-        request.headers.setdefault('Proxy-Authorization',self.auth)
+        if request.meta.get('usescript',False):
+            statu_code, response_text = scripts_request_with_xdaili(request.url,self.fake.user_agent())
+            return HtmlResponse(url=request.url, body=response_text, encoding='utf-8',request=request,status=statu_code)
+        # request.headers.setdefault('Proxy-Authorization',self.auth)
+        # request.headers.setdefault('User-Agent','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36')
 
 class FetcherDownloaderMiddlewareUserAgent(object):
     def __init__(self):

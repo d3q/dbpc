@@ -16,6 +16,8 @@ from scrapy.downloadermiddlewares.httpcache import HttpCacheMiddleware
 from .script.scripts_request_with_xdaili import scripts_request_with_xdaili
 from scrapy.http import Response,HtmlResponse,TextResponse
 import faker
+import random
+from .settings import USER_AGENT
 
 
 class FetcherSpiderMiddleware(object):
@@ -118,6 +120,8 @@ class FetcherDownloaderMiddlewareProxyIP(object):
 
     def __init__(self):
         self.fake = faker.Faker()
+        #self.user_agent=random.choice(USER_AGENT)
+
         # orderno = "ZF20198180632BK2FZP"
         # secret = "e6d04e020e714f97a441afcbda48a2b5"
         # ip_port = "forward.xdaili.cn:80"
@@ -133,7 +137,10 @@ class FetcherDownloaderMiddlewareProxyIP(object):
     def process_request(self, request, spider):
         if request.meta.get('usescript',False):
             statu_code, response_text = scripts_request_with_xdaili(request.url,self.fake.user_agent())
+            print(statu_code)
+            print(self.fake.user_agent())
             return HtmlResponse(url=request.url, body=response_text, encoding='utf-8',request=request,status=statu_code)
+
         # request.headers.setdefault('Proxy-Authorization',self.auth)
         # request.headers.setdefault('User-Agent','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36')
 

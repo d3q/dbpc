@@ -17,7 +17,12 @@ NEWSPIDER_MODULE = 'fetcher.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'fetcher (+http://www.yourdomain.com)'
-# USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+#USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+#USER_AGENT ='Mozilla/5.0 (Windows CE) AppleWebKit/5360 (KHTML, like Gecko) Chrome/61.0.899.0 Safari/5360'
+USER_AGENT=['Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_8_9) AppleWebKit/5322 (KHTML, like Gecko) Chrome/23.0.802.0 Safari/5322',
+             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36",
+             'Mozilla/5.0 (Windows CE) AppleWebKit/5360 (KHTML, like Gecko) Chrome/61.0.899.0 Safari/5360',]
+
 
 
 # Obey robots.txt rules
@@ -59,7 +64,7 @@ DOWNLOADER_MIDDLEWARES = {
 #     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware':None,
 #     'fetcher.middlewares.FetcherDownloaderMiddlewareUserAgent':100,
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':None,
-    'fetcher.middlewares.FetcherDownloaderMiddlewareProxyIP':750,
+   'fetcher.middlewares.FetcherDownloaderMiddlewareProxyIP':750,
 }
 
 # REDIRECT_ENALBED = False

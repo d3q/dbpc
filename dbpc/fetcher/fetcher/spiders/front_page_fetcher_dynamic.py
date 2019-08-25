@@ -19,7 +19,7 @@ class FrontPageFetcher(scrapy.Spider):
             "https://movie.douban.com/j/search_tags?type=tv&tag=%E7%83%AD%E9%97%A8&source=index"
         ]
         for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+            yield scrapy.Request(url=url, callback=self.parse,dont_filter=True, meta={'usescript':True})
 
     def parse(self, response):
         #print('\n' * 10)

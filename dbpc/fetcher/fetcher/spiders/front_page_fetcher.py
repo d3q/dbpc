@@ -19,12 +19,12 @@ class FrontPageFetcher(scrapy.Spider):
         
         #urls = ["https://movie.douban.com/"]
 
-        for i in range(0,2):
+        for i in range(0,1):
         # for url in urls:
              yield scrapy.Request(url='https://movie.douban.com/', callback=self.parse,dont_filter=True, meta={'usescript':True})
 
     def parse(self, response):
-        print(response.text)
+        # print(response.text)
         page = response.url.split("/")[-2]
         filename = '%s.html' % page
         with open(filename, 'wb') as f:
